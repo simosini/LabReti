@@ -8,8 +8,8 @@ public class ServerIterativo
 {
 	public static void main(String[] args) 
 	{
-		ServerSocket s;
-		Socket toClient;
+		ServerSocket s = null;
+		Socket toClient = null;
 		int buffer_dimension = 100;
 
 		try {
@@ -26,6 +26,15 @@ public class ServerIterativo
 			Thread.sleep(240*1000);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				//specific client can't communicate with server
+				toClient.close();
+				//no client can communicate with server
+				s.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
