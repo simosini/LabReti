@@ -34,6 +34,12 @@ public class ClientConnection
 			Thread.sleep(120*1000);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				s.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
