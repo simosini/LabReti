@@ -8,6 +8,8 @@ public class ServerMultithread
 	{
 		ServerSocket s = null;
 		Socket toClient = null;
+		RisorsaCondivisa counter = new RisorsaCondivisa();
+		int clientID = 0;
 
 		try {
 			s = new ServerSocket(0);
@@ -15,7 +17,7 @@ public class ServerMultithread
 			System.out.println("Indirizzo: " + s.getInetAddress() + "; porta: " + s.getLocalPort());
 			while(true) {
 				toClient = s.accept();
-				Thread subServ = new ServerIterativo(toClient);
+				Thread subServ = new ServerIterativo(toClient, ++clientID, counter);
 				subServ.start();
 			}
 		} catch (Exception e) {
