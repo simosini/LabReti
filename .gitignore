@@ -1,2 +1,6 @@
 # Java
 *.class
+
+# C
+*.out
+*.o
