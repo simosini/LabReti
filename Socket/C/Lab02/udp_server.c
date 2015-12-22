@@ -3,6 +3,10 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <arpa/inet.h>
 
 int main(int argc, char **argv){
 	int mysocket; //per descrittore socket
@@ -39,6 +43,31 @@ int main(int argc, char **argv){
 		return -1;
 	}
 	printf("Local Address: %d, %d\n", local_add.sin_addr.s_addr, ntohs(local_add.sin_port));
-	printf("Local Address: %d, %d\n", local_add.sin_addr.s_addr, local_add.sin_port);
+	/*messages exchanges*/
+	char buffer[100];
+	bzero(buffer, 100); /*to have all zero bytes*/
+	struct sockaddr_in add_from;
+	 unsigned int add_l = sizeof(add_from);
+	result = recvfrom(mysocket, buffer, sizeof(buffer), 0, (struct sockaddr *)&add_from, (socklen_t *)&add_l);
+	/*result contains number of bytes received*/
+	if(result < 0){
+		perror("error receiveing");
+		return -1;
+	}
+	/*print message received info*/
+	printf("Received msg %s from %s, %d\n", buffer,inet_ntoa(add_from.sin_addr), ntohs(add_from.sin_port));
+	result = sendto(mysocket, buffer, result, 0, (struct sockaddr*)&add_from, (socklen_t)add_l);
+	if(result < 0) { /*result now contains bytes sent successfully*/
+		perror("error sendto\n");
+		return -1;
+	}
+	/*closing socket*/
+	result = close(mysocket);
+	if (result <0){
+		perror("error closing\n");
+		return -1;
+	}
+		
 	return 0;
+	
 }

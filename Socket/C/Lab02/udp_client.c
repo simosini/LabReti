@@ -1,6 +1,10 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <arpa/inet.h>
 
 int main(int argc, char **argv){
 	int mysocket; //per descrittore socket
@@ -36,7 +40,35 @@ int main(int argc, char **argv){
 		return -1;
 	}
 	printf("Local Address: %d, %d\n", local_add.sin_addr.s_addr, ntohs(local_add.sin_port));
-	printf("Local Address: %d, %d\n", local_add.sin_addr.s_addr, local_add.sin_port);	
-	 	
+	/*sending a message*/
+	char buffer[100];
+	printf("Insert string to send: \n");
+	scanf("%[^\n]", buffer);
+	/*need to build server address which in this case is on the same host*/
+	struct sockaddr_in serv_add;
+	serv_add.sin_family = AF_INET;
+	serv_add.sin_addr.s_addr = inet_addr(argv[1]); /*from command line must be dotted format*/
+	serv_add.sin_port = htons(atoi(argv[2]));
+	result = sendto(mysocket, buffer, sizeof(buffer), 0, (struct sockaddr *)&serv_add, (socklen_t) sizeof(serv_add));
+	if(result < 0){
+		perror("error sendto\n");
+		return -1;
+	}
+	bzero(buffer, 100); /*to use buffer to receive server answer*/
+	struct sockaddr_in indfrom;
+	unsigned int indlength = sizeof(indfrom);
+	result = recvfrom(mysocket, buffer, sizeof(buffer), 0, (struct sockaddr *)&indfrom, (socklen_t *)&indlength);
+	if(result < 0){
+		perror("error receiveng\n");
+		return -1;
+	}
+	printf("Received from server: %s address %d, %d\n", buffer, indfrom.sin_addr.s_addr, ntohs(indfrom.sin_port));
+	/*closing socket*/
+	result = close(mysocket);
+	if(result < 0){
+		perror("error closing\n");
+		return -1;
+	}
+	
 	return 0;
 }
