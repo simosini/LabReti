@@ -35,7 +35,8 @@ int main(int argc, char **argv){
 	/*connecting to server*/
 	struct sockaddr_in servAddr;
 	servAddr.sin_family = AF_INET;
-	servAddr.sin_addr.s_addr = inet_addr(argv[1]);
+	struct hostent *host = gethostbyname(argv[1]);
+	servAddr.sin_addr.s_addr = *(u_long *)host->h_addr_list[0];
 	servAddr.sin_port = htons(atoi(argv[2]));
 	result = connect(mysocket, (struct sockaddr *)&servAddr, sizeof(servAddr));
 	if(result < 0) {

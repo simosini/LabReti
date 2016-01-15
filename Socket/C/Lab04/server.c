@@ -80,12 +80,18 @@ int main(int argc, char **argv){
 				bzero(buffer, 100); //to have all zero bytes
 		
 				result = recv(fd, buffer, sizeof(buffer), 0);
+				struct sockaddr_in cli;
+				int cli_dim = sizeof(cli);
+				int res = getpeername(fd, (struct sockaddr *)&cli, &cli_dim);
+				if (res < 0) {
+					perror("getpeername error\n");
+				}
 				//result contains number of bytes received
 				if(result < 0){
 					perror("error receiving\n");
 				} else if (result == 0) {
 					//client closed connection
-					printf("Client closed connection\n");
+					printf("Client %s %d closed connection\n", inet_ntoa(cli.sin_addr), ntohs(cli.sin_port));
 					result = close(fd);
 					if (result < 0) {
 						perror("close error\n");
@@ -93,12 +99,6 @@ int main(int argc, char **argv){
 					}
 					FD_CLR(fd, &afds);
 				} else {
-					struct sockaddr_in cli;
-					int cli_dim = sizeof(cli);
-					int res = getpeername(fd, (struct sockaddr *)&cli, &cli_dim);
-					if (res < 0) {
-						perror("getpeername error\n");
-					}
 					//print message received info
 					printf("Received msg %s from %s %d\n", buffer, inet_ntoa(cli.sin_addr), ntohs(cli.sin_port));
 					result = send(fd, buffer, result, 0);
