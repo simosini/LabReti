@@ -13,7 +13,7 @@ public class explicit_binding
 			InetSocketAddress isa = new InetSocketAddress(ia, 0);
 			sClient.bind(isa);
 			System.out.println("OS allocated port number " + sClient.getLocalPort());
-			Thread.sleep(120*1000);
+			//Thread.sleep(120*1000);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

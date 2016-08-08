@@ -29,9 +29,9 @@ public class ServerIterativo
 		} finally {
 			try {
 				//specific client can't communicate with server
-				toClient.close();
+				toClient.close(); // chiude socket attiva ma puo accettare altre richieste connessioni
 				//no client can communicate with server
-				s.close();
+				s.close(); // chiude server non accetta piu nessuna connessione
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

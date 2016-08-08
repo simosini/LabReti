@@ -12,7 +12,7 @@ public class ServerIterativo
 	{
 		ServerSocket s = null;
 		Socket toClient = null;
-		int buffer_dimension = 100;
+		//int buffer_dimension = 100;
 
 		try {
 			s = new ServerSocket(0);
@@ -21,7 +21,7 @@ public class ServerIterativo
 			toClient = s.accept();
 			System.out.println("Indirizzo client: " + toClient.getInetAddress() + "; porta: " + toClient.getPort());
 
-			byte buffer[] = new byte[buffer_dimension];
+			/*byte buffer[] = new byte[buffer_dimension];
 			InputStream is = toClient.getInputStream();		
 			OutputStream osToClient = toClient.getOutputStream();
 
@@ -36,8 +36,8 @@ public class ServerIterativo
 				}
 				System.out.println("Ricevuta stringa \"" + msg + "\" di " + letti + " byte.");
 				System.out.println("Invio ACK.");
-				osToClient.write("ACK".getBytes());
-			}
+				osToClient.write("ACK".getBytes());*/
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
