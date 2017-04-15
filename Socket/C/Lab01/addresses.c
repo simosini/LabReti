@@ -23,4 +23,6 @@ int main(int argc, char** argv) {
 		else printf("Indirizzo: %u\n", (unsigned int)address);
 	}
 	else printf("Invalid argument.\n");
+	
+	return 0;
 }		

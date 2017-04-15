@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.OutputStream;
 
-public class ClientConnection
+public class ClientConnectionr		
 {
 	public static void main(String[] args)
 	{
@@ -20,7 +20,7 @@ public class ClientConnection
 			int port = Integer.parseInt(args[0]);
 			//ia = InetAddress.getByName("pc3-21");
 			ia = InetAddress.getLocalHost();
-			isa = new InetSocketAddress(ia, port);
+			isa = new InetSocketAddress(ia, port); /* sto effettuando connessione su localhost su porta data dal server */
 			s.connect(isa);
 			System.out.println("Porta locale: " + s.getLocalPort());
 			System.out.println("Indirizzo: " + s.getInetAddress() + "; porta: " + s.getPort());
